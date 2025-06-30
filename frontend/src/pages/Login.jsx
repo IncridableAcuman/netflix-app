@@ -1,4 +1,5 @@
 import { Lock, LogInIcon, Mail } from 'lucide-react';
+import AuthNavbar from '../components/AuthNavbar';
 
 const Login = () => {
   return (

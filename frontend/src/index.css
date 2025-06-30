@@ -5,3 +5,11 @@
     background-position: center;
     background-repeat: no-repeat;
 }
+.landing-image{
+    background-image: url("../public/backgroundImage.png");
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.pad-con{
+    padding: 30px 10%;
+}
