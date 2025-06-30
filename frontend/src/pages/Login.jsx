@@ -36,7 +36,7 @@ const Login = () => {
             className="w-full flex justify-center items-center gap-2 bg-amber-700 hover:bg-amber-800 transition duration-300 py-3 rounded-lg text-white font-medium"
           >
             <LogInIcon size={20} />
-            Sign In
+            Sign In Now
           </button>
         </form>
 
