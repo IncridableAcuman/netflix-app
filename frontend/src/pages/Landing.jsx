@@ -1,6 +1,7 @@
 import { ArrowRight, Calendar, Clock } from 'lucide-react'
 import AuthNavbar from '../components/AuthNavbar'
 import LandingShowing from '../components/LandingShowing'
+import Footer from '../components/Footer'
 
 const Landing = () => {
   return (
@@ -42,7 +43,8 @@ const Landing = () => {
     </div>
     {/* movie data */}
     <LandingShowing/>
-
+{/* footer */}
+    <Footer/>
     </>
   )
 }
