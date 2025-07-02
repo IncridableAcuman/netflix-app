@@ -25,4 +25,19 @@ public class UserService {
         userModel.setRole(Role.USER);
         return userRepository.save(userModel);
     }
+//    find user
+    public UserModel findUser(String email){
+        return userRepository.findByEmail(email).orElseThrow(()->new RuntimeException("User not found"));
+    }
+//    isMatchPassword
+    public void isMatchPassword(String userPassword,String requestPassword){
+        if(!passwordEncoder.matches(userPassword,requestPassword)){
+            throw new RuntimeException("Password does not equal");
+        }
+    }
+//    update password
+    public UserModel updatePassword(String password,UserModel userModel){
+        userModel.setPassword(passwordEncoder.encode(password));
+        return userRepository.save(userModel);
+    }
 }

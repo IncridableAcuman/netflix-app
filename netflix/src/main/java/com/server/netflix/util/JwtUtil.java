@@ -75,7 +75,20 @@ private Claims extractAllClaims(String token){
         return extractAllClaims(token).getExpiration();
     }
 //    validate token
-    isTokenValid(String token){
-
+   public boolean isTokenValid(String token){
+        try {
+           extractAllClaims(token);
+           return true;
+        } catch (RuntimeException e){
+            return false;
+        }
+    }
+//    toke is expired
+    public boolean isTokenExpired(String token){
+        try {
+            return extractExpiration(token).before(new Date());
+        } catch (RuntimeException e) {
+            return false;
+        }
     }
 }
