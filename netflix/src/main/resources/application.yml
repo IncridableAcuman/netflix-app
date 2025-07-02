@@ -31,3 +31,6 @@ jwt:
   secret: ${SECRET}
   access-time: ${ACCESS_TIME}
   refresh-time: ${REFRESH_TIME}
+
+client:
+  url: ${CLIENT_URL}
