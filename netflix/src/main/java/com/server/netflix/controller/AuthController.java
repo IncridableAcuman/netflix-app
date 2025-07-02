@@ -45,4 +45,9 @@ public class AuthController {
     public ResponseEntity<String> resetPassword(@Valid @RequestBody ResetPasswordRequest request){
         return ResponseEntity.ok(authService.resetPassword(request));
     }
+//    get data
+    @GetMapping("/data")
+    public ResponseEntity<UserData> getUserData(){
+        return ResponseEntity.ok(authService.getUserData());
+    }
 }

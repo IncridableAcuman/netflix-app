@@ -9,8 +9,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
 
 @Service
 @RequiredArgsConstructor
@@ -137,4 +138,11 @@ public class AuthService {
         userService.updatePassword(request.getPassword(),userModel);
         return "Password updated successfully.";
     }
+//    get user data
+    public UserData getUserData(){
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        UserModel userModel=(UserModel) authentication.getPrincipal();
+        return new UserData(userModel.getId(),userModel.getUsername(),userModel.getRole());
+    }
+
 }
