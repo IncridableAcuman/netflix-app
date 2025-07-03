@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.util.Date;
 import java.util.Map;
 
@@ -24,10 +23,13 @@ public class JwtUtil {
     private long accessTime;
     @Value("${jwt.refresh-time}")
     private long refreshTime;
-    private Key signingKey;
+    private SecretKey signingKey ;
 //    generate key
     @PostConstruct
     public void init(){
+        if (accessTime <= 0 || refreshTime <= 0) {
+            throw new IllegalArgumentException("JWT accessTime and refreshTime must be positive");
+        }
         this.signingKey=Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 //    build token
@@ -61,7 +63,7 @@ public class JwtUtil {
 private Claims extractAllClaims(String token){
         return Jwts
                 .parser()
-                .verifyWith((SecretKey) signingKey)
+                .verifyWith(signingKey)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
@@ -86,9 +88,10 @@ private Claims extractAllClaims(String token){
 //    toke is expired
     public boolean isTokenExpired(String token){
         try {
-            return extractExpiration(token).before(new Date());
+            Date date = extractExpiration(token);
+            return date.after(new Date());
         } catch (RuntimeException e) {
-            return false;
+            return true;
         }
     }
 }

@@ -30,14 +30,14 @@ public class UserService {
         return userRepository.findByEmail(email).orElseThrow(()->new RuntimeException("User not found"));
     }
 //    isMatchPassword
-    public void isMatchPassword(String userPassword,String requestPassword){
-        if(!passwordEncoder.matches(userPassword,requestPassword)){
+    public void isMatchPassword(String rawPassword,String encodePassword){
+        if(!passwordEncoder.matches(rawPassword,encodePassword)){
             throw new RuntimeException("Password does not equal");
         }
     }
 //    update password
-    public UserModel updatePassword(String password,UserModel userModel){
+    public void updatePassword(String password, UserModel userModel){
         userModel.setPassword(passwordEncoder.encode(password));
-        return userRepository.save(userModel);
+        userRepository.save(userModel);
     }
 }

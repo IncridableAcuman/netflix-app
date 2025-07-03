@@ -18,13 +18,13 @@ public class CorsConfig {
     @Bean
     public CorsFilter corsFilter(){
         UrlBasedCorsConfigurationSource source=new UrlBasedCorsConfigurationSource();
-        CorsConfiguration configuration=new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(clientUrl));
-        configuration.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTION"));
-        configuration.setExposedHeaders(List.of("Authorization","Content-Type","Origin","Accept"));
-        configuration.setAllowCredentials(true);
-        configuration.setAllowedHeaders(List.of("Authorization","Set-Cookie"));
-        source.registerCorsConfiguration("/**",configuration);
+        CorsConfiguration config=new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.setAllowedOrigins(List.of(clientUrl));
+        config.setAllowedMethods(List.of("GET","PUT","POST","DELETE","OPTIONS"));
+        config.setAllowedHeaders(List.of("Content-Type","Authorization","Origin","Accept"));
+        config.setExposedHeaders(List.of("Authorization","Set-Cookie"));
+        source.registerCorsConfiguration("/**",config);
         return new CorsFilter(source);
     }
 }

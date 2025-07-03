@@ -1,6 +1,7 @@
 package com.server.netflix.service;
 
 import com.server.netflix.dto.*;
+import com.server.netflix.model.TokenModel;
 import com.server.netflix.model.UserModel;
 import com.server.netflix.util.CookieUtil;
 import com.server.netflix.util.JwtUtil;
@@ -31,9 +32,9 @@ public class AuthService {
 //        generate tokens
         String accessToken= jwtUtil.generateAccessToken(userModel);
         String refreshToken= jwtUtil.generateRefreshToken(userModel);
-        tokenService.createToken(userModel,refreshToken);
+        TokenModel tokenModel=tokenService.createToken(userModel,refreshToken);
 //        add refresh token to cookie
-        cookieUtil.addCookie(refreshToken,response);
+        cookieUtil.addCookie(tokenModel.getRefreshToken(),response);
 //        return new user data
         return new AuthResponse(
                 userModel.getId(),
@@ -45,19 +46,22 @@ public class AuthService {
         );
     }
 //    login
+    @Transactional
     public AuthResponse login(AuthRequest request,HttpServletResponse response){
         UserModel userModel=userService.findUser(request.getEmail());
 //       equals password
-        userService.isMatchPassword(userModel.getPassword(), request.getPassword());
+
+        userService.isMatchPassword(request.getPassword(),userModel.getPassword());
 //        remove token
         tokenService.deleteToken(userModel);
 //        generate tokens
         String accessToken= jwtUtil.generateAccessToken(userModel);
         String refreshToken= jwtUtil.generateRefreshToken(userModel);
+        TokenModel tokenModel=tokenService.getUser(userModel,refreshToken);
 //        saving token
-        tokenService.createToken(userModel,refreshToken);
+        tokenService.validateRefreshToken(refreshToken);
 //        add token to cookie
-        cookieUtil.addCookie(refreshToken,response);
+        cookieUtil.addCookie(tokenModel.getRefreshToken(),response);
         return new AuthResponse(
                 userModel.getId(),
                 userModel.getUsername(),
@@ -68,17 +72,12 @@ public class AuthService {
         );
     }
 //    refresh
+    @Transactional
     public AuthResponse refresh(String refreshToken,HttpServletResponse response){
-        tokenService.validateRefreshToken(refreshToken);
 //        is token
         if(!jwtUtil.isTokenValid(refreshToken)){
-            throw new RuntimeException("Token is invalid");
+            throw new RuntimeException("Token is invalid or expired!");
         }
-//        is token expired
-        if(!jwtUtil.isTokenExpired(refreshToken)){
-            throw new RuntimeException("Token is expired");
-        }
-        tokenService.findToken(refreshToken);
         String email=jwtUtil.extractSubject(refreshToken);
         UserModel userModel=userService.findUser(email);
 //        remove token
@@ -87,9 +86,10 @@ public class AuthService {
         String accessToken= jwtUtil.generateAccessToken(userModel);
         String newRefreshToken= jwtUtil.generateRefreshToken(userModel);
 //        saving token
-        tokenService.createToken(userModel,newRefreshToken);
+        tokenService.validateRefreshToken(refreshToken);
+        TokenModel tokenModel=tokenService.getUser(userModel,newRefreshToken);
 //        add token to cookie
-        cookieUtil.addCookie(newRefreshToken,response);
+        cookieUtil.addCookie(tokenModel.getRefreshToken(),response);
         return new AuthResponse(
                 userModel.getId(),
                 userModel.getUsername(),
@@ -100,22 +100,22 @@ public class AuthService {
         );
     }
 //    logout
-    public void  logout(String refreshToken){
-        tokenService.validateRefreshToken(refreshToken);
+    @Transactional
+    public void  logout(String refreshToken,HttpServletResponse response){
 //        is token
         if(!jwtUtil.isTokenValid(refreshToken)){
-            throw new RuntimeException("Token is invalid");
-        }
-//        is token expired
-        if(!jwtUtil.isTokenExpired(refreshToken)){
-            throw new RuntimeException("Token is expired");
+            throw new RuntimeException("Token is invalid or expired");
         }
         String email=jwtUtil.extractSubject(refreshToken);
         UserModel userModel=userService.findUser(email);
+        TokenModel tokenModel=tokenService.findByUserModel(userModel);
 //        remove token
-        tokenService.deleteToken(userModel);
+        tokenService.validateRefreshToken(refreshToken);
+        tokenService.removeToken(tokenModel);
+        cookieUtil.removeToken(response);
     }
 //    forgot password
+    @Transactional
     public String forgotPassword(ForgotPasswordRequest request){
         UserModel userModel=userService.findUser(request.getEmail());
         String token= jwtUtil.generateAccessToken(userModel);
@@ -123,22 +123,22 @@ public class AuthService {
         return "Reset password link sent to your email";
     }
 //    reset password
+    @Transactional
     public String resetPassword(ResetPasswordRequest request){
-        tokenService.validateRefreshToken(request.getToken());
 //        is token
         if(!jwtUtil.isTokenValid(request.getToken())){
-            throw new RuntimeException("Token is invalid");
-        }
-//        is token expired
-        if(!jwtUtil.isTokenExpired(request.getToken())){
-            throw new RuntimeException("Token is expired");
+            throw new RuntimeException("Token is invalid or expired!");
         }
         String email= jwtUtil.extractSubject(request.getToken());
+        if(email==null || email.isEmpty()){
+            throw new RuntimeException("Email is empty");
+        }
         UserModel userModel=userService.findUser(email);
         userService.updatePassword(request.getPassword(),userModel);
         return "Password updated successfully.";
     }
 //    get user data
+    @Transactional
     public UserData getUserData(){
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
         UserModel userModel=(UserModel) authentication.getPrincipal();

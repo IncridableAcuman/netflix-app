@@ -21,18 +21,18 @@ public class AuthController {
     }
 //    login
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@Valid AuthRequest request,HttpServletResponse response){
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest request,HttpServletResponse response){
         return ResponseEntity.ok(authService.login(request,response));
     }
 //    refresh
     @GetMapping("/refresh")
-    public ResponseEntity<AuthResponse> refresh(@CookieValue(name = "refreshToken",required = false) String refreshToken,HttpServletResponse response){
+    public ResponseEntity<AuthResponse> refresh(@CookieValue(name = "refreshToken") String refreshToken,HttpServletResponse response){
         return ResponseEntity.ok(authService.refresh(refreshToken,response));
     }
 //    logout
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(@CookieValue(name = "refreshToken",required = false) String refreshToken){
-        authService.logout(refreshToken);
+    public ResponseEntity<String> logout(@CookieValue(name = "refreshToken") String refreshToken,HttpServletResponse response){
+        authService.logout(refreshToken,response);
         return ResponseEntity.ok("User logged out");
     }
 //    forgot password
@@ -46,7 +46,7 @@ public class AuthController {
         return ResponseEntity.ok(authService.resetPassword(request));
     }
 //    get data
-    @GetMapping("/data")
+    @GetMapping("/user-data")
     public ResponseEntity<UserData> getUserData(){
         return ResponseEntity.ok(authService.getUserData());
     }

@@ -13,26 +13,35 @@ import java.time.LocalDateTime;
 public class TokenService {
     private final TokenRepository tokenRepository;
 
-//    create token and saving
-    public void createToken(UserModel userModel, String refreshToken){
-        TokenModel tokenModel=new TokenModel();
+    public TokenModel createToken(UserModel userModel, String refreshToken) {
+        TokenModel tokenModel = new TokenModel();
         tokenModel.setRefreshToken(refreshToken);
-        tokenModel.setExpiryDate(LocalDateTime.now());
+        tokenModel.setExpiryDate(LocalDateTime.now().plusDays(7));
         tokenModel.setUserModel(userModel);
-        tokenRepository.save(tokenModel);
+        return tokenRepository.save(tokenModel);
     }
-//    delete token
-    public void deleteToken(UserModel userModel){
-        TokenModel tokenModel=tokenRepository.findByUserModel(userModel).orElseThrow(()->new RuntimeException("Token not found by user"));
+
+    public void removeToken(TokenModel tokenModel) {
         tokenRepository.delete(tokenModel);
     }
-//    validate refresh token
-    public void validateRefreshToken(String refreshToken){
-        if(refreshToken==null || !refreshToken.startsWith("Bearer ")){
-            throw new RuntimeException("Token is empty");
+
+    public TokenModel findByUserModel(UserModel userModel) {
+        return tokenRepository.findByUserModel(userModel)
+                .orElseThrow(() -> new RuntimeException("Token not found by user"));
+    }
+
+    public void deleteToken(UserModel userModel) {
+        TokenModel tokenModel = findByUserModel(userModel);
+        removeToken(tokenModel);
+    }
+
+    public void validateRefreshToken(String refreshToken) {
+        if (refreshToken == null || refreshToken.isEmpty()) {
+            throw new RuntimeException("Refresh token is missing");
         }
     }
-    public void findToken(String refreshToken){
-        tokenRepository.findByRefreshToken(refreshToken).orElseThrow(()->new RuntimeException("Token not found"));
+    public TokenModel getUser(UserModel userModel,String refreshToken){
+        return tokenRepository.findByUserModel(userModel)
+                .orElseGet(()->createToken(userModel,refreshToken));
     }
 }
