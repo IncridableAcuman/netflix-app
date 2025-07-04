@@ -42,7 +42,7 @@ public class AuthService {
                 userModel.getEmail(),
                 userModel.getRole(),
                 accessToken,
-                refreshToken
+                tokenModel.getRefreshToken()
         );
     }
 //    login
@@ -50,10 +50,7 @@ public class AuthService {
     public AuthResponse login(AuthRequest request,HttpServletResponse response){
         UserModel userModel=userService.findUser(request.getEmail());
 //       equals password
-
         userService.isMatchPassword(request.getPassword(),userModel.getPassword());
-//        remove token
-        tokenService.deleteToken(userModel);
 //        generate tokens
         String accessToken= jwtUtil.generateAccessToken(userModel);
         String refreshToken= jwtUtil.generateRefreshToken(userModel);
@@ -81,7 +78,7 @@ public class AuthService {
         String email=jwtUtil.extractSubject(refreshToken);
         UserModel userModel=userService.findUser(email);
 //        remove token
-        tokenService.deleteToken(userModel);
+        tokenService.deleteToken(refreshToken);
 //        generate tokens
         String accessToken= jwtUtil.generateAccessToken(userModel);
         String newRefreshToken= jwtUtil.generateRefreshToken(userModel);
@@ -102,16 +99,15 @@ public class AuthService {
 //    logout
     @Transactional
     public void  logout(String refreshToken,HttpServletResponse response){
+        tokenService.validateRefreshToken(refreshToken);
 //        is token
         if(!jwtUtil.isTokenValid(refreshToken)){
             throw new RuntimeException("Token is invalid or expired");
         }
         String email=jwtUtil.extractSubject(refreshToken);
-        UserModel userModel=userService.findUser(email);
-        TokenModel tokenModel=tokenService.findByUserModel(userModel);
+        userService.findUser(email);
 //        remove token
-        tokenService.validateRefreshToken(refreshToken);
-        tokenService.removeToken(tokenModel);
+        tokenService.deleteToken(refreshToken);
         cookieUtil.removeToken(response);
     }
 //    forgot password

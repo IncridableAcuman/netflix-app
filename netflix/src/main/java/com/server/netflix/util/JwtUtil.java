@@ -89,7 +89,7 @@ private Claims extractAllClaims(String token){
     public boolean isTokenExpired(String token){
         try {
             Date date = extractExpiration(token);
-            return date.after(new Date());
+            return date.before(new Date());
         } catch (RuntimeException e) {
             return true;
         }

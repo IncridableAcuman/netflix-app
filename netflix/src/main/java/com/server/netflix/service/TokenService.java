@@ -25,13 +25,9 @@ public class TokenService {
         tokenRepository.delete(tokenModel);
     }
 
-    public TokenModel findByUserModel(UserModel userModel) {
-        return tokenRepository.findByUserModel(userModel)
-                .orElseThrow(() -> new RuntimeException("Token not found by user"));
-    }
 
-    public void deleteToken(UserModel userModel) {
-        TokenModel tokenModel = findByUserModel(userModel);
+    public void deleteToken(String refreshToken) {
+        TokenModel tokenModel = tokenRepository.findByRefreshToken(refreshToken).orElseThrow(()->new RuntimeException("Token not found"));
         removeToken(tokenModel);
     }
 
