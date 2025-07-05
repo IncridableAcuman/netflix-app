@@ -34,3 +34,7 @@ jwt:
 
 client:
   url: ${CLIENT_URL}
+
+movie:
+  key: ${TM_DB_API_KEY}
+  tm_db_url: ${TM_DB_URL}

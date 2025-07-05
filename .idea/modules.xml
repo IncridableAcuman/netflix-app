@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/netflix-clone.iml" filepath="$PROJECT_DIR$/.idea/netflix-clone.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/netflix.main.iml" filepath="$PROJECT_DIR$/.idea/modules/netflix.main.iml" />
     </modules>
   </component>
 </project>
