@@ -9,7 +9,7 @@ const Landing = () => {
     <div className="w-full h-screen landing-image text-white">
       <AuthNavbar/>
       <div className="flex items-center justify-between p-4 sm:p-6 md:p-8 lg:p-10">
-       <div className="">
+       <div className="pt-6">
         <img src="./image.png" alt="marvel" />
         <h1 className='text-2xl lg:text-6xl font-extrabold py-4'>Guardians <br /> of the Galaxy</h1>
         {/* data */}
