@@ -1,6 +1,6 @@
 import { Mail } from 'lucide-react'
 import AuthContext from '../contexts/authContext'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 const ForgotPassword = () => {
@@ -20,12 +20,16 @@ const ForgotPassword = () => {
     e.preventDefault();
     try {
       await forgotPassword(formData);
-      navigate("/login");
     } catch (error) {
       console.log(error);
       toast.error(error?.message || "Forgot password failed");
     }
   }
+    useEffect(()=>{
+      if(localStorage.getItem("accessToken")){
+        navigate("/");
+      }
+    },[navigate])
   return (
     <>
      <div className="flex items-center justify-center w-full h-screen bg-image">

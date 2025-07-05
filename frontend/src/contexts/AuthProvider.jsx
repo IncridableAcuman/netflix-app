@@ -39,18 +39,18 @@ const AuthProvider = ({children}) => {
         }
     }
 
-    const forgotPassword= async(email)=>{
+    const forgotPassword= async(formData)=>{
       try {
-        const {data}=await axiosInstance.post("/auth/forgot-password",{email});
+        const {data}=await axiosInstance.post("/auth/forgot-password",formData);
         toast.success(data.message || "Sent to email");
       } catch (error) {
           console.log(error);
           toast.error(error?.response?.message || error.message || "Request failed");
       }
     }
-    const resetPassword=async (token,password)=>{
+    const resetPassword=async (formData)=>{
       try {
-        const {data}=await axiosInstance.put("/auth/reset-password",{token,password});
+        const {data}=await axiosInstance.put("/auth/reset-password",formData);
         toast.success(data.message || "Updated");
       } catch (error) {
           console.log(error);

@@ -1,17 +1,54 @@
 import { Lock } from 'lucide-react'
-import React from 'react'
+import { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import AuthContext from '../contexts/authContext';
+import { toast } from 'react-toastify';
 
 const ResetPassword = () => {
+   const { resetPassword } = useContext(AuthContext);
+   const navigate = useNavigate();
+   const [formData, setFormData] = useState({
+      token:'',
+      password: '',
+      confirmPassword:''
+   });
+
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      try {
+        await resetPassword(formData);
+        navigate("/login");
+      } catch (error) {
+        console.log(error);
+        toast.error(error?.message || "Reset password failed");
+      }
+    }
+      useEffect(()=>{
+        if(localStorage.getItem("accessToken")){
+          navigate("/");
+        }
+      },[navigate])
   return (
     <>
      <div className="flex items-center justify-center w-full h-screen bg-image">
       <div className="bg-gray-950 text-white w-full max-w-md p-8 rounded-2xl shadow-lg bg-opacity-90">
         <h1 className="text-center text-4xl font-bold mb-6">Reset Password</h1>
-        <form className="space-y-5">
+        <form className="space-y-5" onSubmit={handleSubmit}>
           <div className="flex items-center gap-3 bg-gray-800 w-full p-3 rounded-lg focus-within:ring-2 ring-amber-700">
             <Lock size={20} />
             <input
               type="password"
+              name='password'
+              value={formData.password}
+              onChange={handleChange}
               placeholder="Password"
               className="outline-none bg-transparent w-full placeholder:text-gray-400"
             />
@@ -20,6 +57,9 @@ const ResetPassword = () => {
             <Lock size={20} />
             <input
               type="password"
+              name='confirmPassword'
+              value={formData.confirmPassword}
+              onChange={handleChange}
               placeholder="Confirm Password"
               className="outline-none bg-transparent w-full placeholder:text-gray-400"
             />
@@ -50,4 +90,4 @@ const ResetPassword = () => {
   )
 }
 
-export default ResetPassword
+export default ResetPassword;
