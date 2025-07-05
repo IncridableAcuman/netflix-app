@@ -1,16 +1,52 @@
 import { Lock, LogInIcon, Mail, User } from 'lucide-react';
+import { useContext, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import authContext from '../contexts/authContext';
 
 const Register = () => {
+  const [formData,setFormData]=useState({
+    username:'',
+    email:'',
+    password:''
+  });
+  const {register}=useContext(authContext);
+  const navigate=useNavigate();
+  const handleChange=(e)=>{
+    const {name,value}=e.target;
+    setFormData(prev=>({
+      ...prev,
+      [name]:value
+    }));
+  }
+  const handleSubmit =async (e)=>{
+    e.preventDefault();
+    try {
+      await register(formData);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+      toast.error("Registrantion failed");
+    }
+  }
+  useEffect(()=>{
+    if(localStorage.getItem("accessToken")){
+      navigate("/");
+    }
+  },[navigate])
   return (
     <>
     <div className="flex items-center justify-center w-full h-screen bg-image">
       <div className="bg-gray-950 text-white w-full max-w-md p-8 rounded-2xl shadow-lg bg-opacity-90">
         <h1 className="text-center text-4xl font-bold mb-6">Sign Up</h1>
-        <form className="space-y-5">
+        <form className="space-y-5" onSubmit={handleSubmit}>
           <div className="flex items-center gap-3 bg-gray-800 w-full p-3 rounded-lg focus-within:ring-2 ring-amber-700">
             <User size={20} />
             <input
               type="text"
+              name='username'
+              value={formData.username}
+              onChange={handleChange}
               placeholder="Username"
               className="outline-none bg-transparent w-full placeholder:text-gray-400"
             />
@@ -19,6 +55,9 @@ const Register = () => {
             <Mail size={20} />
             <input
               type="email"
+              name='email'
+              value={formData.email}
+              onChange={handleChange}
               placeholder="Email"
               className="outline-none bg-transparent w-full placeholder:text-gray-400"
             />
@@ -27,6 +66,9 @@ const Register = () => {
             <Lock size={20} />
             <input
               type="password"
+              name='password'
+              value={formData.password}
+              onChange={handleChange}
               placeholder="Password"
               className="outline-none bg-transparent w-full placeholder:text-gray-400"
             />

@@ -1,14 +1,12 @@
 import { useState } from "react"
-import { CreateContext } from "./CreateContext";
 import { toast } from 'react-toastify'
 import axiosInstance from "../api/axiosInstance";
+import AuthContext from "./authContext";
 const AuthProvider = ({children}) => {
     const [user,setUser]=useState(null);
-    const [loading,setLoading]=useState(false);
-
-    const register=async (username,email,password)=>{
+    const register=async (formData)=>{
         try {
-          const {data}=await axiosInstance.post("/auth/register",{username,email,password});
+          const {data}=await axiosInstance.post("/auth/register",formData);
           setUser(data);
           localStorage.setItem("accessToken",data.accessToken);
           toast.success("Successfully");
@@ -18,9 +16,9 @@ const AuthProvider = ({children}) => {
         }
     }
 
-    const login=async (email,password)=>{
+    const login=async (formData)=>{
         try {
-          const {data}=await axiosInstance.post("/auth/login",{email,password});
+          const {data}=await axiosInstance.post("/auth/login",formData);
           setUser(data);
           localStorage.setItem("accessToken",data.accessToken);
           toast.success("Successfully");
@@ -62,9 +60,9 @@ const AuthProvider = ({children}) => {
 
   return (
     <>
-    <CreateContext.Provider value={{user,register,login,logout,forgotPassword,resetPassword}}>
+    <AuthContext.Provider value={{user,register,login,logout,forgotPassword,resetPassword}}>
         {children}
-    </CreateContext.Provider>
+    </AuthContext.Provider>
     </>
   )
 }
