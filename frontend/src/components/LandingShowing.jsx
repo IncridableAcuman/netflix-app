@@ -6,14 +6,14 @@ import { useNavigate } from 'react-router-dom';
 const LandingShowing = () => {
 const {movieData,popularMovies}=useContext(MovieContext);
 const navigate=useNavigate();
-const popularMoviesHandler=async ()=>{
-    try {
-      await popularMovies();
-         console.log(movieData)
-    } catch (error) {
-      toast.error(error?.response?.message || error?.message || "Something went wrong!");
-    }
+const popularMoviesHandler=async()=>{
+  try {
+    await popularMovies();
+  } catch (error) {
+    console.error("Error fetching popular movies:", error);
+    toast.error("Failed to fetch popular movies");
   }
+}
    useEffect(()=>{
     popularMoviesHandler();
    },[]);

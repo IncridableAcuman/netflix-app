@@ -4,6 +4,7 @@ import LandingShowing from '../components/LandingShowing'
 import Footer from '../components/Footer'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Trailer from '../components/Trailer'
 
 
 const Landing = () => {
@@ -53,6 +54,8 @@ const Landing = () => {
     </div>
     {/* movie data */}
     <LandingShowing/>
+    {/* trailer */}
+    <Trailer/>
 {/* footer */}
     <Footer/>
     </>

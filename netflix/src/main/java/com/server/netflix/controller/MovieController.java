@@ -1,6 +1,7 @@
 package com.server.netflix.controller;
 
 import com.server.netflix.dto.MovieDto;
+import com.server.netflix.dto.VideoDto;
 import com.server.netflix.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -36,5 +37,10 @@ public class MovieController {
     @GetMapping("/get/{id}")
     public ResponseEntity<String> getMovieById(@PathVariable Long id){
         return ResponseEntity.ok(movieService.getMovieById(id));
+    }
+//    watch videos
+    @GetMapping("/watch/videos/{id}")
+    public ResponseEntity<List<VideoDto>> watchMovie(@PathVariable Long id){
+        return ResponseEntity.ok(movieService.watchMovie(id));
     }
 }

@@ -5,6 +5,7 @@ import axiosInstance from '../api/axiosInstance'
 const MovieProvider = ({children}) => {
   const [movieData,setMovieData]=useState([]);
   const [topRatedMovie,setTopRatedMovie]=useState([]);
+  const [video,setVideo]=useState(null);
 
   const popularMovies = async ()=>{
     try {
@@ -25,6 +26,10 @@ const MovieProvider = ({children}) => {
       setMovieData(null);
       toast.error(error?.response?.message || error?.message || "Something went wrong!"); 
     }
+  }
+  // watch videos
+  const watchMovie = async ()=>{
+    const {data}=await axiosInstance.get("/movie/watch/video");
   }
 
   return (
