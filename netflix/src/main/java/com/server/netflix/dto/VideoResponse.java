@@ -7,5 +7,5 @@ import java.util.List;
 @Data
 public class VideoResponse
 {
-    private List<VideoDto> videoList;
+    private List<VideoDto> results;
 }

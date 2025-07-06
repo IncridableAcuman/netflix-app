@@ -62,6 +62,6 @@ public class MovieService {
         RestTemplate template=new RestTemplate();
         VideoResponse response=template.getForObject(url+"/movie/"+id+"/videos?api_key="+key, VideoResponse.class);
         assert response != null;
-        return response.getVideoList();
+        return response.getResults();
     }
 }

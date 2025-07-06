@@ -1,11 +1,12 @@
 import React, { useContext, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import MovieContext from '../contexts/movieContext';
 import { Clock } from 'lucide-react';
 
 const MovieDetails = () => {
   const { id } = useParams();
   const { movieData, popularMovies } = useContext(MovieContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,7 +47,7 @@ const MovieDetails = () => {
                   </div>
 
                   <div className="flex items-center gap-4">
-                    <button className="bg-gray-800 text-white rounded-md px-5 py-2.5 hover:bg-gray-700 transition duration-300">
+                    <button className="bg-gray-800 text-white rounded-md px-5 py-2.5 hover:bg-gray-700 transition duration-300" onClick={() => navigate(`/trailer/${item.id}`)}>
                       Watch Trailer
                     </button>
                     <button className="bg-rose-600 text-white rounded-md px-5 py-2.5 hover:bg-rose-700 transition duration-300">
@@ -62,6 +63,22 @@ const MovieDetails = () => {
           ))
         }
       </div>
+      <div className="bg-gray-900 text-white">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {
+          movieData.map((item, index) => (
+            <div key={index} onClick={() => navigate(`/movie/${item.id}`)} className="bg-gray-800 rounded-lg overflow-hidden">
+              <img
+                src={`https://image.tmdb.org/t/p/w500${item?.poster_path}`}
+                alt={item.title}
+                className="w-full h-64 object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+          )).slice(0, 4) // Display only 4 movies
+        }
+      </div>
+      </div>
+      
     </>
   );
 };

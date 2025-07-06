@@ -5,7 +5,7 @@ import axiosInstance from '../api/axiosInstance'
 const MovieProvider = ({children}) => {
   const [movieData,setMovieData]=useState([]);
   const [topRatedMovie,setTopRatedMovie]=useState([]);
-  const [video,setVideo]=useState(null);
+  const [video,setVideo]=useState([]);
 
   const popularMovies = async ()=>{
     try {
@@ -28,13 +28,20 @@ const MovieProvider = ({children}) => {
     }
   }
   // watch videos
-  const watchMovie = async ()=>{
-    const {data}=await axiosInstance.get("/movie/watch/video");
+  const watchMovie = async (id)=>{
+    try {
+      const {data}=await axiosInstance.get(`/movie/watch/videos/${id}`);
+      setVideo(data);
+    } catch (error) {
+      console.log(error);
+      setVideo(null);
+      toast.error(error?.response?.message || error?.message || "Something went wrong!");
+    }
   }
 
   return (
     <>
-    <MovieContext.Provider value={{movieData,topRatedMovie,popularMovies,topRatedMovies}}>
+    <MovieContext.Provider value={{movieData,topRatedMovie,video,popularMovies,topRatedMovies,watchMovie}}>
         {children}
     </MovieContext.Provider>
     </>
