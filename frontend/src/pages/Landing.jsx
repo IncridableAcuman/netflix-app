@@ -2,8 +2,18 @@ import { ArrowRight, Calendar, Clock } from 'lucide-react'
 import AuthNavbar from '../components/AuthNavbar'
 import LandingShowing from '../components/LandingShowing'
 import Footer from '../components/Footer'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+
 
 const Landing = () => {
+  const navigate=useNavigate();
+
+      useEffect(()=>{
+        if(localStorage.getItem("accessToken")){
+          navigate("/");
+        }
+      },[navigate])
   return (
     <>
     <div className="w-full h-screen landing-image text-white">

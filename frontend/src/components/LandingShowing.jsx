@@ -1,6 +1,22 @@
-import React from 'react'
+import { useContext, useEffect } from 'react';
+import MovieContext from '../contexts/movieContext'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom';
 
 const LandingShowing = () => {
+const {movieData,popularMovies}=useContext(MovieContext);
+const navigate=useNavigate();
+const popularMoviesHandler=async ()=>{
+    try {
+      await popularMovies();
+         console.log(movieData)
+    } catch (error) {
+      toast.error(error?.response?.message || error?.message || "Something went wrong!");
+    }
+  }
+   useEffect(()=>{
+    popularMoviesHandler();
+   },[]);
   return (
     <>
     <div className="w-full min-h-screen bg-gray-950 text-white">
@@ -8,6 +24,19 @@ const LandingShowing = () => {
          <h1 className='text-xl font-semibold'>Showing Now</h1>
         <p className='text-sm text-gray-400 hover:text-gray-50 transition duration-300 cursor-pointer'>Show All</p>
        </div>
+       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+        {
+          movieData.map((item,index)=>(
+            <div className="" key={index}>
+              <div className="bg-gray-800 rounded-md overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+               onClick={()=>navigate(`/movie/${item.id}`)}>
+                <img src={"https://image.tmdb.org/t/p/w500"+item?.poster_path} alt={item.title} className="w-full rounded-md cursor-pointer hover:scale-105 transition-transform duration-300" />
+              </div>
+            </div>
+          )).slice(0,8) // Display only first 8 movies
+        }
+       </div>
+       <button className='flex items-center justify-center bg-gray-800 text-white mx-auto rounded-md p-2 mt-4 hover:bg-gray-700 transition duration-300'>Show More</button>
     </div>
     </>
   )

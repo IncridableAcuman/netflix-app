@@ -9,6 +9,7 @@ import ResetPassword from './pages/ResetPassword'
 import Movies from './pages/Movies'
 import TVShows from './pages/TVShows'
 import MyList from './pages/MyList'
+import MovieDetails from './pages/MovieDetails'
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
         <Route path='/movies' element={<Movies/>} />
         <Route path='/tv' element={<TVShows/>} />
         <Route path='/list' element={<MyList/>} />
+        <Route path='/movie/:id' element={<MovieDetails/>} />
       </Route>
     </Routes>
     </>
