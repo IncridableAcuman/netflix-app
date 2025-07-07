@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom';
+import React, {  useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
 import MainNavbar from '../components/MainNavbar';
-import { ArrowRight, Calendar, Clock } from 'lucide-react';
+import {Calendar, Clock } from 'lucide-react';
 import Footer from '../components/Footer'
-
+import MovieContext from '../contexts/movieContext';
   const Home = () => {
     const navigate=useNavigate();
       useEffect(()=>{
@@ -11,6 +11,7 @@ import Footer from '../components/Footer'
           navigate("/landing");
         }
       },[navigate])
+
     return (
       <>
       <div className="w-full h-screen landing-image text-white pt-36 ">
@@ -52,7 +53,7 @@ import Footer from '../components/Footer'
             </div>
         </div>
        </div>
-       
+       {/*  */}
       </div>
       </div>
       <Footer/>

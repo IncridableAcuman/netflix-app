@@ -16,28 +16,27 @@ axiosInstance.interceptors.request.use(
     },
     error=>Promise.reject(error)
 );
+
 axiosInstance.interceptors.response.use(
-
-    config=>config,
-    async error=>{
-            const originalRequest=error.config;
-            if(error.response.status===401 || !originalRequest._retry){
-                originalRequest._retry=true;
-                try {
-                    const {data}=await axiosInstance.get("/auth/refresh");
-                    localStorage.setItem("accessToken",data.accessToken);
-                    originalRequest.headers["Authorization"]=`Bearer ${data.accessToken}`;
-                    return axiosInstance.request(originalRequest);
-                } catch (error) {           
-                    console.log(error);
-                    localStorage.removeItem("accesstoken");
-                    toast.error(error?.response?.message || "Someting  went wrong!");
-                    window.location.href="/landing";
-                }
-            }
-        
+  response => response,
+  async error => {
+    const originalRequest = error.config;
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      try {
+        const { data } = await axiosInstance.get("/auth/refresh");
+        localStorage.setItem("accessToken", data.accessToken);
+        originalRequest.headers["Authorization"] = `Bearer ${data.accessToken}`;
+        return axiosInstance(originalRequest);
+      } catch (err) {
+        localStorage.removeItem("accessToken");
+        toast.error(err?.response?.data?.message || "Session expired. Please login again.");
+        window.location.href = "/landing";
+      }
     }
-
+    return Promise.reject(error);
+  }
 );
+
 
 export default axiosInstance;

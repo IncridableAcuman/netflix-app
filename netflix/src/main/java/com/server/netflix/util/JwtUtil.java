@@ -79,8 +79,7 @@ private Claims extractAllClaims(String token){
 //    validate token
    public boolean isTokenValid(String token){
         try {
-           extractAllClaims(token);
-           return true;
+           return !isTokenExpired(token);
         } catch (RuntimeException e){
             return false;
         }

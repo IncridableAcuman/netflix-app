@@ -17,8 +17,8 @@ const Landing = () => {
       },[navigate])
 
        useEffect(() => {
-         const fetchData = async () => {
-           await popularMovies();
+         const fetchData =  () => {
+            popularMovies();
          };
          fetchData();
        }, [popularMovies]);
@@ -67,15 +67,14 @@ const Landing = () => {
       <div className="w-full max-w-4xl h-96 flex items-center justify-center">
         {
           movieData.slice(0,1).map((item,index)=>(
-            <iframe 
-              key={index} 
-              className="w-full h-full" 
-              src={`https://www.youtube.com/embed/${item?.key}`} 
-              title="YouTube video player" 
-              frameBorder="0" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-              allowFullScreen
-            ></iframe>
+            <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-start lg:items-center gap-10 mt-16" key={index}>
+            <img src={"https://image.tmdb.org/t/p/w500"+item?.poster_path} alt={item.title} className="w-full max-w-sm rounded-lg shadow-lg" />
+            <div className="">
+              <h1 className='text-2xl font-bold pb-3'>{item.title}</h1>
+              <p className='text-sm'>{item.overview}</p>
+              <p className='text-sm pt-2'>⭐️⭐️⭐️⭐️⭐️</p>
+            </div>
+            </div>
           ))
         }
       </div>

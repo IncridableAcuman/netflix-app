@@ -11,7 +11,6 @@ const AuthProvider = ({children}) => {
           localStorage.setItem("accessToken",data.accessToken);
           toast.success("Successfully");
         } catch (error) {
-          console.log(error);
           toast.error(error?.response?.message || error.message || "Request failed");
         }
     }
@@ -23,7 +22,6 @@ const AuthProvider = ({children}) => {
           localStorage.setItem("accessToken",data.accessToken);
           toast.success("Successfully");
         } catch (error) {
-          console.log(error);
           toast.error(error?.response?.message || error.message || "Request failed");
         }
     }
@@ -34,7 +32,6 @@ const AuthProvider = ({children}) => {
           localStorage.removeItem("accessToken");
           toast.success("Successfully");
         } catch (error) {
-          console.log(error);
           toast.error(error?.response?.message || error.message || "Request failed");
         }
     }
@@ -44,7 +41,6 @@ const AuthProvider = ({children}) => {
         const {data}=await axiosInstance.post("/auth/forgot-password",formData);
         toast.success(data.message || "Sent to email");
       } catch (error) {
-          console.log(error);
           toast.error(error?.response?.message || error.message || "Request failed");
       }
     }
@@ -53,7 +49,6 @@ const AuthProvider = ({children}) => {
         const {data}=await axiosInstance.put("/auth/reset-password",formData);
         toast.success(data.message || "Updated");
       } catch (error) {
-          console.log(error);
           toast.error(error?.response?.message || error.message || "Request failed");
       }
     }

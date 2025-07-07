@@ -32,7 +32,10 @@ public class TokenService {
     }
 
     public void validateRefreshToken(String refreshToken) {
-        if (refreshToken == null || refreshToken.isEmpty()) {
+        TokenModel tokenModel=tokenRepository.findByRefreshToken(refreshToken).orElseThrow(()->
+                new RuntimeException("Token not found"));
+        if (tokenModel.getExpiryDate().isBefore(LocalDateTime.now())) {
+            deleteToken(refreshToken);
             throw new RuntimeException("Refresh token is missing");
         }
     }

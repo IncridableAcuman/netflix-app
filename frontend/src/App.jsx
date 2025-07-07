@@ -22,14 +22,12 @@ const App = () => {
       <Route path='/register' element={<Register/>} />
       <Route path='/forgot-password' element={<ForgotPassword/>} />
       <Route path='/reset-password' element={<ResetPassword/>} />
-      <Route>
         <Route path='/' element={<Home/>} />
         <Route path='/movies' element={<Movies/>} />
         <Route path='/tv' element={<TVShows/>} />
         <Route path='/list' element={<MyList/>} />
         <Route path='/movie/:id' element={<MovieDetails/>} />
         <Route path='/trailer/:id' element={<Trailer/>} />
-      </Route>
     </Routes>
     </>
   )

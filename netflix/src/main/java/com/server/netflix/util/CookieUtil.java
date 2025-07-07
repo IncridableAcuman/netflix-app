@@ -16,7 +16,7 @@ public class CookieUtil {
         cookie.setMaxAge(refreshTime);
         cookie.setSecure(false);
         cookie.setPath("/");
-        cookie.setAttribute("SameSite", "Strict");
+        cookie.setAttribute("SameSite", "Lax");
         response.addCookie(cookie);
     }
 //    remove token from cookie
@@ -26,7 +26,7 @@ public class CookieUtil {
         cookie.setMaxAge(0);
         cookie.setSecure(false);
         cookie.setPath("/");
-        cookie.setAttribute("SameSite", "Strict");
+        cookie.setAttribute("SameSite", "Lax");
         response.addCookie(cookie);
     }
 }

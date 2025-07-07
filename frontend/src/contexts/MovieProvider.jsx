@@ -12,8 +12,7 @@ const MovieProvider = ({children}) => {
       const {data}=await axiosInstance.get("/movie/popular");
       setMovieData(data);
     } catch (error) {
-      console.log(error);
-      setMovieData(null);
+      setMovieData([]);
       toast.error(error?.response?.message || error?.message || "Something went wrong!");
     }
   }
@@ -22,8 +21,7 @@ const MovieProvider = ({children}) => {
       const {data}=await axiosInstance.get("/movie/top_rated");
       setTopRatedMovie(data);
     } catch (error) {
-      console.log(error);
-      setMovieData(null);
+      setMovieData([]);
       toast.error(error?.response?.message || error?.message || "Something went wrong!"); 
     }
   }
@@ -33,8 +31,7 @@ const MovieProvider = ({children}) => {
       const {data}=await axiosInstance.get(`/movie/watch/videos/${id}`);
       setVideo(data);
     } catch (error) {
-      console.log(error);
-      setVideo(null);
+      setVideo([]);
       toast.error(error?.response?.message || error?.message || "Something went wrong!");
     }
   }

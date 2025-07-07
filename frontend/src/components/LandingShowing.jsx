@@ -19,7 +19,7 @@ const navigate=useNavigate();
             <div className="" key={index}>
               <div className="bg-gray-800 rounded-md overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
                onClick={()=>navigate(`/movie/${item.id}`)}>
-                <img src={"https://image.tmdb.org/t/p/w500"+item?.poster_path} alt={item.title} className="w-full rounded-md cursor-pointer hover:scale-105 transition-transform duration-300" />
+                <img loading='lazy' src={"https://image.tmdb.org/t/p/w500"+item?.poster_path} alt={item.title} className="w-full rounded-md cursor-pointer hover:scale-105 transition-transform duration-300" />
               </div>
             </div>
           )).slice(0,8) // Display only first 8 movies

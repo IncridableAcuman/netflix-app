@@ -13,3 +13,13 @@
 .pad-con{
     padding: 30px 10%;
 }
+
+/* index.css yoki App.css */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* Internet Explorer */
+  scrollbar-width: none;     /* Firefox */
+}
