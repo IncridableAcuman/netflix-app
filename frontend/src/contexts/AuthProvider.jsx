@@ -30,7 +30,6 @@ const AuthProvider = ({children}) => {
           await axiosInstance.post("/auth/logout");
           setUser(null);
           localStorage.removeItem("accessToken");
-          toast.success("Successfully");
         } catch (error) {
           toast.error(error?.response?.message || error.message || "Request failed");
         }

@@ -1,9 +1,20 @@
-import { Search, Menu, X } from "lucide-react";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Search, Menu, X, LogOut } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import AuthContext from "../contexts/authContext";
+import { toast } from "react-toastify";
 
 const MainNavbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const {logout}=useContext(AuthContext);
+  const navigate=useNavigate();
+  const handleLogout = () => {
+    logout();
+    localStorage.removeItem("accessToken");
+    toast.success("Logged out successfully");
+    setMenuOpen(false); // Close the mobile menu on logout
+    navigate("/landing"); // Redirect to landing page after logout
+  };
 
   return (
     <div className="fixed top-0 left-0 w-full z-50 bg-gray-900 text-white shadow-md">
@@ -37,6 +48,7 @@ const MainNavbar = () => {
             alt="User Profile"
             className="w-8 h-8 rounded-md cursor-pointer hover:ring-2 ring-white transition duration-300"
           />
+          <LogOut size={20} onClick={handleLogout} />
           {/* Hamburger menu - Mobile */}
           <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
             {menuOpen ? <X size={24} /> : <Menu size={24} />}
