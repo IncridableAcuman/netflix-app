@@ -1,22 +1,11 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import MovieContext from '../contexts/movieContext'
-import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom';
 
 const LandingShowing = () => {
-const {movieData,popularMovies}=useContext(MovieContext);
+const {movieData}=useContext(MovieContext);
 const navigate=useNavigate();
-const popularMoviesHandler=async()=>{
-  try {
-    await popularMovies();
-  } catch (error) {
-    console.error("Error fetching popular movies:", error);
-    toast.error("Failed to fetch popular movies");
-  }
-}
-   useEffect(()=>{
-    popularMoviesHandler();
-   },[]);
+
   return (
     <>
     <div className="w-full min-h-screen bg-gray-950 text-white">
@@ -36,7 +25,6 @@ const popularMoviesHandler=async()=>{
           )).slice(0,8) // Display only first 8 movies
         }
        </div>
-       <button className='flex items-center justify-center bg-gray-800 text-white mx-auto rounded-md p-2 mt-4 hover:bg-gray-700 transition duration-300'>Show More</button>
     </div>
     </>
   )

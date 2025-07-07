@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import MovieContext from '../contexts/movieContext';
 import { Clock } from 'lucide-react';
+import Footer from '../components/Footer';
 
 const MovieDetails = () => {
   const { id } = useParams();
@@ -13,7 +14,7 @@ const MovieDetails = () => {
       await popularMovies();
     };
     fetchData();
-  }, []);
+  }, [popularMovies]);
 
   return (
     <>
@@ -78,7 +79,10 @@ const MovieDetails = () => {
         }
       </div>
       </div>
-      
+      {/* footer */}
+      <div className="pt-12 bg-gray-900 text-white">
+      <Footer/>        
+      </div>
     </>
   );
 };

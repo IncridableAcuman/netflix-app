@@ -2,17 +2,27 @@ import { ArrowRight, Calendar, Clock } from 'lucide-react'
 import AuthNavbar from '../components/AuthNavbar'
 import LandingShowing from '../components/LandingShowing'
 import Footer from '../components/Footer'
-import { useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import MovieContext from '../contexts/movieContext'
 
 const Landing = () => {
   const navigate=useNavigate();
+  const {movieData,popularMovies} = useContext(MovieContext);
 
       useEffect(()=>{
         if(localStorage.getItem("accessToken")){
           navigate("/");
         }
       },[navigate])
+
+       useEffect(() => {
+         const fetchData = async () => {
+           await popularMovies();
+         };
+         fetchData();
+       }, [popularMovies]);
+
   return (
     <>
     <div className="w-full h-screen landing-image text-white">
@@ -53,6 +63,23 @@ const Landing = () => {
     {/* movie data */}
     <LandingShowing/>
     {/* trailer */}
+    <div className="w-full h-screen bg-gray-900 text-white flex items-center justify-center">
+      <div className="w-full max-w-4xl h-96 flex items-center justify-center">
+        {
+          movieData.slice(0,1).map((item,index)=>(
+            <iframe 
+              key={index} 
+              className="w-full h-full" 
+              src={`https://www.youtube.com/embed/${item?.key}`} 
+              title="YouTube video player" 
+              frameBorder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowFullScreen
+            ></iframe>
+          ))
+        }
+      </div>
+    </div>
 {/* footer */}
     <Footer/>
     </>
