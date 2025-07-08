@@ -67,7 +67,7 @@ import MoviesData from '../components/MoviesData';
         <MoviesData category={"top_rated"} />
         {/* scroll movies cards by x */}
           <h1 className='text-xl font-semibold p-4 sm:p-6 md:p-8 lg:p-10'>Up coming</h1>
-            <MoviesData category={"up_coming"} />
+            <MoviesData category={"upcoming"} />
             {/* Now playing */}
               <h1 className='text-xl font-semibold p-4 sm:p-6 md:p-8 lg:p-10'>Now playing</h1>
                 <MoviesData category={"now_playing"} />
