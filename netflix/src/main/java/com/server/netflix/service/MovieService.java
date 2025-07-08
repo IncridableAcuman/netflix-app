@@ -17,6 +17,14 @@ public class MovieService {
     private String key;
     @Value("${movie.tm_db_url}")
     private String url;
+//    get movies
+    @Transactional
+    public List<MovieDto> getMovies(String category){
+        RestTemplate template=new RestTemplate();
+        MovieListResponse response=template.getForObject(url+"/movie/"+category+"?api_key="+key, MovieListResponse.class);
+        assert response != null;
+        return response.getResults();
+    }
 
 //    get popular movies
     @Transactional
@@ -28,34 +36,11 @@ public class MovieService {
     }
 //   topRated movies
 
-    @Transactional
-    public List<MovieDto> topRated(){
-        RestTemplate template=new RestTemplate();
-        MovieListResponse response=template.getForObject(url+"/movie/top_rated?api_key="+key, MovieListResponse.class);
-        assert response != null;
-        return response.getResults();
-    }
-//    upcoming
-    @Transactional
-    public List<MovieDto> upComing(){
-        RestTemplate template=new RestTemplate();
-        MovieListResponse response = template.getForObject(url+"/movie/upcoming?api_key="+key,MovieListResponse.class);
-        assert response != null;
-        return response.getResults();
-    }
 //    get movie by id
     @Transactional
     public String getMovieById(Long id){
         RestTemplate template=new RestTemplate();
         return template.getForObject(url+"/movie/"+id+"?api_key="+key, String.class);
-    }
-//    now playing
-    @Transactional
-    public List<MovieDto> nowPLaying(){
-        RestTemplate template=new RestTemplate();
-        MovieListResponse response=template.getForObject(url+"/movie/now_playing?api_key="+key,MovieListResponse.class);
-        assert response!=null;
-        return response.getResults();
     }
 //    watch movie video
     public List<VideoDto> watchMovie(Long id){

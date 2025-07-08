@@ -25,6 +25,7 @@ const MainNavbar = () => {
             src="/logo.png"
             alt="Netflix Clone Logo"
             className="w-24 lg:w-32 cursor-pointer"
+            onClick={() => navigate("/")}
           />
         </div>
 

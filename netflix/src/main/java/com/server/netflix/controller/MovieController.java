@@ -18,21 +18,12 @@ import java.util.List;
 public class MovieController {
     private final MovieService movieService;
 
-//    get popular movies
-    @GetMapping("/popular")
-    public ResponseEntity<List<MovieDto>> getPopularMovies(){
-        return ResponseEntity.ok(movieService.popularMovies());
+//    get movies by category,popular,now_playing,top_rated,upcoming
+    @GetMapping("/categories/{category}")
+    public ResponseEntity<List<MovieDto>> getMovies(@PathVariable String category){
+        return ResponseEntity.ok(movieService.getMovies(category));
     }
-//    topRated
-    @GetMapping("/top_rated")
-    public ResponseEntity<List<MovieDto>> topRated(){
-        return ResponseEntity.ok(movieService.topRated());
-    }
-//    upComing
-    @GetMapping("/up_coming")
-    public ResponseEntity<List<MovieDto>> upComing(){
-        return ResponseEntity.ok(movieService.upComing());
-    }
+
 //    get movie by id
     @GetMapping("/get/{id}")
     public ResponseEntity<String> getMovieById(@PathVariable Long id){
