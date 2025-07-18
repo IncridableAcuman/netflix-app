@@ -1,9 +1,8 @@
-import React, {  useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import  {  useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
 import MainNavbar from '../components/MainNavbar';
 import {Calendar, Clock } from 'lucide-react';
 import Footer from '../components/Footer'
-import MovieContext from '../contexts/movieContext';
 import MoviesData from '../components/MoviesData';
   const Home = () => {
     const navigate=useNavigate();

@@ -1,8 +1,11 @@
 import React from 'react'
+import MainNavbar from '../components/MainNavbar'
 
 const TVShows = () => {
   return (
-    <div>TVShows</div>
+     <>
+    <MainNavbar/>
+    </>
   )
 }
 

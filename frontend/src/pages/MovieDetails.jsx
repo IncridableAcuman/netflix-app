@@ -55,7 +55,7 @@ const MovieDetails = () => {
                 Watch Trailer
               </button>
               <button className="bg-rose-600 text-white rounded-md px-5 py-2.5 hover:bg-rose-700 transition duration-300">
-                Buy Tickets
+                Add to List
               </button>
               <button className="bg-transparent border border-gray-600 text-white rounded-md px-4 py-2.5 hover:bg-gray-800 transition duration-300">
                 ❤️

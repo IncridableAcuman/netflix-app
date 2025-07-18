@@ -6,7 +6,6 @@ const MovieProvider = ({children}) => {
   const [movieData,setMovieData]=useState([]);
   const [topRatedMovie,setTopRatedMovie]=useState([]);
   const [video,setVideo]=useState([]);
-  const [getItem,setGetItem]=useState([]);
 
   const popularMovies = async ()=>{
     try {
@@ -37,19 +36,10 @@ const MovieProvider = ({children}) => {
     }
   }
 
-  const getMovies=async (category)=>{
-    try {
-      const {data}=await axiosInstance.get(`/movie/categories/${category}`);
-      setGetItem(data);
-    } catch (error) {
-      setGetItem([]);
-        toast.error(error?.response?.message || error?.message || "Something went wrong!");
-    }
-  }
 
   return (
     <>
-    <MovieContext.Provider value={{getItem,getMovies,movieData,topRatedMovie,video,popularMovies,topRatedMovies,watchMovie}}>
+    <MovieContext.Provider value={{movieData,topRatedMovie,video,popularMovies,topRatedMovies,watchMovie}}>
         {children}
     </MovieContext.Provider>
     </>
